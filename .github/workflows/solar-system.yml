@@ -16,7 +16,7 @@ jobs:
         name: Unit Testing
         strategy:
           matrix:
-            nodejs_version: [18, 19, 20]
+            nodejs_version: [18, 20]
             operating_system: [ubuntu-latest, macos-latest]
             exclude:
               - nodejs_version: 18
@@ -98,3 +98,10 @@ jobs:
             with:
               username: ${{ vars.DOCKER_USERNAME }}
               password: ${{ secrets.DOCKER_PASSWORD }}
+          
+          - name: Docker Image Build & Push 
+            uses: docker/build-push-action@v7
+            with:
+              context: .
+              push: true
+              tags: ${{vars.DOCKER_USERNAME}}/solar-system:${{github.sha}}
